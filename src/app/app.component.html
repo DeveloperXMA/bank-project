@@ -2,7 +2,11 @@
   <h1>
     {{title}}
   </h1>
-  <button class="btn btn-primary" (click)="getAllTransactionsData()">Load all transactions</button>
+  <div class="btn-group btn-group-lg" role="group" aira-label="buttons">
+    <button class="btn btn-primary" (click)="getAllTransactionsData()">Load all transactions</button>
+    <button class="btn btn-primary" (click)="getAllTransactionsData(true)">Ignore donut</button>
+    <button class="btn btn-primary" (click)="getProjectedTransactionsForMonth()">Crystall Ball</button>
+  </div>
   <div *ngIf="status" class="well">{{status}}</div>
   <div class="table-responsive">
     <table class="table table-hover">
@@ -16,8 +20,8 @@
       <tbody>
         <tr *ngFor="let item of tableData; let i = index;">
           <td>{{item?.time}}</td>
-          <td>{{item?.spent}}</td>
-          <td>{{item?.earn}}</td>
+          <td>${{item?.spent}}</td>
+          <td>${{item?.earn}}</td>
         </tr>
       </tbody>
     </table>

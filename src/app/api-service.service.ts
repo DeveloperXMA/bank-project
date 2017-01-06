@@ -29,7 +29,7 @@ export class ApiServiceService {
     return Promise.reject(errMsg);
   }
 
-  getAllTransactions():Observable<any> {
+  getAllTransactions(): Observable<any> {
     let headers = new Headers({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -38,10 +38,40 @@ export class ApiServiceService {
     const url = 'https://2016.api.levelmoney.com/api/v2/core/get-all-transactions';
     const args = {
       args:
-      { uid: 1110590645, token: '2DA6669F34EB703A301E8A7D092B8F07', 'api-token': 'AppTokenForInterview', 'json-strict-mode': false, 'json-verbose-response': false }
+      {
+        uid: 1110590645,
+        token: '2DA6669F34EB703A301E8A7D092B8F07',
+        'api-token': 'AppTokenForInterview',
+        'json-strict-mode': false,
+        'json-verbose-response': false
+      }
     };
     return this.http.post(url, JSON.stringify(args), options)
       .map(this.extractData)
       .catch(this.handleError);
+  }
+
+  GetProjectedTransactionsForMonth(year, month): Observable<any> {
+    let headers = new Headers({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    });
+    let options = new RequestOptions({ headers: headers });
+    const url = `https://2016.api.levelmoney.com/api/v2/core/projected-transactions-for-month`;
+    const args = {
+      args:
+      {
+        uid: 1110590645,
+        token: '2DA6669F34EB703A301E8A7D092B8F07',
+        'api-token': 'AppTokenForInterview',
+        'json-strict-mode': false,
+        'json-verbose-response': false
+      },
+      year: year,
+      month: month
+    };
+    return this.http.post(url, JSON.stringify(args), options)
+    .map(this.extractData)
+    .catch(this.handleError);
   }
 }
