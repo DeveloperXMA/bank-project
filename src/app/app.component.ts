@@ -10,16 +10,16 @@ import { ApiServiceService } from './api-service.service';
 })
 export class AppComponent {
 
-  private title = 'Bank Project!';
-  private status = '';
-  private allTransactions:Array<any> = [];
+  public title = 'Bank Project!';
+  public status = '';
+  private allTransactions: Array<any> = [];
   private months = [];
   private tableData = [];
   private averageSpent = 0;
   private averageEarn = 0;
   private flag = 0;
   private removedRecords = [];
-  private shownCC = false;
+  public shownCC = false;
 
   constructor(private apiService: ApiServiceService) {
 
@@ -103,11 +103,11 @@ export class AppComponent {
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
     return this.apiService.GetProjectedTransactionsForMonth(year, month)
-    .subscribe(
+      .subscribe(
       data => {
         if (this.allTransactions.length === 0) {
           this.status = 'Please load all transactions first!';
-        } else if (this.flag === 0 ) {
+        } else if (this.flag === 0) {
           this.flag = 1;
           this.shownCC = false;
           this.allTransactions = this.allTransactions.concat(data);
@@ -119,11 +119,11 @@ export class AppComponent {
       error => {
         console.log(error);
       }
-    );
+      );
   }
 
-  isLongerThen24Hours(time1, time2):Boolean {
-    let duration = moment.duration(time1-time2).as('seconds');
+  isLongerThen24Hours(time1, time2): Boolean {
+    let duration = moment.duration(time1 - time2).as('seconds');
     if (duration > 86400) {
       return true;
     } else {
@@ -132,17 +132,17 @@ export class AppComponent {
   }
 
   uniq(a) {
-   return Array.from(new Set(a));
+    return Array.from(new Set(a));
   }
 
   reCalculate() {
     let indexArray = [];
-    for(let item of this.removedRecords) {
+    for (let item of this.removedRecords) {
       let index = item.prevIndex;
       indexArray.push(index);
     }
     indexArray = this.uniq(indexArray);
-    for(let i = 0; i < indexArray.length; i++) {
+    for (let i = 0; i < indexArray.length; i++) {
       let number = indexArray[i];
       this.allTransactions.splice(i, 1);
     }
@@ -159,22 +159,24 @@ export class AppComponent {
     for (let index = 0; index < this.allTransactions.length; index++) {
       let i = 1;
       let time1 = new Date(this.allTransactions[index]['transaction-time']).getTime();
-      if (index + i >= this.allTransactions.length) continue;
+      if (index + i >= this.allTransactions.length) {
+        continue;
+      }
       let time2 = new Date(this.allTransactions[index + i]['transaction-time']).getTime();
       while (!this.isLongerThen24Hours(time2, time1) && (index + i) < this.allTransactions.length) {
-        if(this.allTransactions[index].amount + this.allTransactions[index+i].amount === 0) {
+        if (this.allTransactions[index].amount + this.allTransactions[index + i].amount === 0) {
           let obj = {
             time: moment(time1),
             amount: this.allTransactions[index].amount / 10000,
             merchant: this.allTransactions[index].merchant,
             prevIndex: index,
-          }
+          };
           let obj2 = {
             time: moment(time2),
-            amount: this.allTransactions[index+i].amount / 10000,
-            merchant: this.allTransactions[index+i].merchant,
+            amount: this.allTransactions[index + i].amount / 10000,
+            merchant: this.allTransactions[index + i].merchant,
             prevIndex: index + i,
-          }
+          };
           this.removedRecords.push(obj);
           this.removedRecords.push(obj2);
           break;
