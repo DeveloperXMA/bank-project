@@ -1,6 +1,14 @@
+1. npm install -g angular-cli
+2. git clone https://github.com/SomeguyMa/bank-project.git
+3. move to that folder
+4. npm install
+5. ng serve
+6. open http://localhost:4200/
+
 # BankProject
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.24.
+
 
 ## Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
